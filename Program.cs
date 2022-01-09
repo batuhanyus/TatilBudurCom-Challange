@@ -84,19 +84,18 @@ namespace Challenge1
             List<SummarizedSalesData> summaries = new();
             foreach (var key in theCodeHolder.Keys)
             {
-                string theCode = key.ToString();
+                int[] digits = key.ToString().ToCharArray().Select(x => (int)Char.GetNumericValue(x)).ToArray();
                 SummarizedSalesData ssd = new();
-                ssd.ProductId = int.Parse($"{theCode[7]}{theCode[8]}");
-                ssd.CompanyId = int.Parse($"{theCode[7]}{theCode[8]}");
-                ssd.BrandId = brandCodes[int.Parse(theCode[3].ToString())];
-                ssd.StoreId = storeCodes[int.Parse($"{theCode[5]}{theCode[6]}")];
-                ssd.WeekNumber = int.Parse(theCode[0].ToString()) + 2020 + int.Parse($"{theCode[1]}{theCode[2]}");
+                ssd.ProductId = digits[7] * 10 + digits[8];
+                ssd.CompanyId = digits[4];
+                ssd.BrandId = brandCodes[digits[3]];
+                ssd.StoreId = storeCodes[digits[5] * 10 + digits[6]];
+                ssd.WeekNumber = digits[0] + 2020 + digits[1] * 10 + digits[2];
                 ssd.TotalVolume += theCodeHolder[key].A;
                 ssd.TotalPrice += theCodeHolder[key].B;
 
                 summaries.Add(ssd);
             }
-
 
             //Our work is done. Now return the correct data.
             return summaries;
