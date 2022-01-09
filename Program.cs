@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace Challenge1
 {
@@ -30,16 +31,10 @@ namespace Challenge1
             //*****README*****
             //Hi, there. 
 
-            
 
-            Dictionary<int, SummarizedSalesData> summaryHolder = new();
-            
 
-            //Dictionary<string, int> brandCodes = new();
-            //Dictionary<string, int> storeCodes = new();
 
-            //string[] brandCodes = new string[10];
-            //string[] storeCodes = new string[100];
+            Dictionary<int, (double A, decimal B)> theCodeHolder = new();
 
             List<string> brandCodes = new List<string>();
             List<string> storeCodes = new List<string>();
@@ -58,7 +53,7 @@ namespace Challenge1
                 weekNumber += calendar.GetWeekOfYear(dt, calendarWeekRule, firstDayOfWeek);
 
                 //Check if brand and store codes have their theCode parts. If not, create.
-                if(!brandCodes.Contains(salesData.BrandId))
+                if (!brandCodes.Contains(salesData.BrandId))
                     brandCodes.Add(salesData.BrandId);
                 if (!storeCodes.Contains(salesData.StoreId))
                     storeCodes.Add(salesData.StoreId);
@@ -73,27 +68,38 @@ namespace Challenge1
                 theCode += salesData.ProductId;
 
                 //Check if we have an entry for theCode, if not create.
-                if (!summaryHolder.ContainsKey(theCode))
+                if (!theCodeHolder.ContainsKey(theCode))
                 {
-                    SummarizedSalesData ssd = new();
-
-                    //As we lack a ctor, let's do it in the old way.
-                    ssd.ProductId = salesData.ProductId;
-                    ssd.CompanyId = salesData.CompanyId;
-                    ssd.BrandId = salesData.BrandId;
-                    ssd.StoreId = salesData.StoreId;
-                    ssd.WeekNumber = weekNumber;
-
-                    summaryHolder.Add(theCode, ssd);
+                    (double A, decimal B) t = (0d, 0m);
+                    theCodeHolder.Add(theCode, t);
                 }
 
                 //Now as we have the required record in the dictionary, we can update volumes and prices.
-                summaryHolder[theCode].TotalVolume += salesData.Volume;
-                summaryHolder[theCode].TotalPrice += salesData.Price;
+                (double A, decimal B) tuple = theCodeHolder[theCode];
+                tuple.A += salesData.Volume;
+                tuple.B += salesData.Price;
+                theCodeHolder[theCode] = tuple;
             }
 
+            List<SummarizedSalesData> summaries = new();
+            foreach (var key in theCodeHolder.Keys)
+            {
+                string theCode = key.ToString();
+                SummarizedSalesData ssd = new();
+                ssd.ProductId = int.Parse($"{theCode[7]}{theCode[8]}");
+                ssd.CompanyId = int.Parse($"{theCode[7]}{theCode[8]}");
+                ssd.BrandId = brandCodes[int.Parse(theCode[3].ToString())];
+                ssd.StoreId = storeCodes[int.Parse($"{theCode[5]}{theCode[6]}")];
+                ssd.WeekNumber = int.Parse(theCode[0].ToString()) + 2020 + int.Parse($"{theCode[1]}{theCode[2]}");
+                ssd.TotalVolume += theCodeHolder[key].A;
+                ssd.TotalPrice += theCodeHolder[key].B;
+
+                summaries.Add(ssd);
+            }
+
+
             //Our work is done. Now return the correct data.
-            return summaryHolder.Select(a => a.Value).ToList();
+            return summaries;
         }
 
 
