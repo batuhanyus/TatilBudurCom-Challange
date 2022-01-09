@@ -47,12 +47,7 @@ namespace Challenge1
                 weekNumber += calendar.GetWeekOfYear(dt, calendarWeekRule, firstDayOfWeek);
 
                 //Create the "theCode".
-                string theCode = String.Empty;
-                theCode = salesData.BrandId;
-                theCode += salesData.StoreId;
-                theCode += salesData.CompanyId.ToString();
-                theCode += salesData.ProductId.ToString();
-                theCode += weekNumber.ToString();
+                string theCode = $"{salesData.BrandId}{salesData.StoreId}{salesData.CompanyId.ToString()}{salesData.ProductId.ToString()}{weekNumber.ToString()}";
 
                 //Check if we have an entry for theCode, if not create.
                 if (!summaryHolder.ContainsKey(theCode))
