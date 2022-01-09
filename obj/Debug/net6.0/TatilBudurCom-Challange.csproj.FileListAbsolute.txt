@@ -1,0 +1,15 @@
+D:\Projects\TatilBudurCom-Challange\bin\Debug\net6.0\TatilBudurCom-Challange.exe
+D:\Projects\TatilBudurCom-Challange\bin\Debug\net6.0\TatilBudurCom-Challange.deps.json
+D:\Projects\TatilBudurCom-Challange\bin\Debug\net6.0\TatilBudurCom-Challange.runtimeconfig.json
+D:\Projects\TatilBudurCom-Challange\bin\Debug\net6.0\TatilBudurCom-Challange.dll
+D:\Projects\TatilBudurCom-Challange\bin\Debug\net6.0\ref\TatilBudurCom-Challange.dll
+D:\Projects\TatilBudurCom-Challange\bin\Debug\net6.0\TatilBudurCom-Challange.pdb
+D:\Projects\TatilBudurCom-Challange\obj\Debug\net6.0\TatilBudurCom-Challange.csproj.AssemblyReference.cache
+D:\Projects\TatilBudurCom-Challange\obj\Debug\net6.0\TatilBudurCom-Challange.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\TatilBudurCom-Challange\obj\Debug\net6.0\TatilBudurCom-Challange.AssemblyInfoInputs.cache
+D:\Projects\TatilBudurCom-Challange\obj\Debug\net6.0\TatilBudurCom-Challange.AssemblyInfo.cs
+D:\Projects\TatilBudurCom-Challange\obj\Debug\net6.0\TatilBudurCom-Challange.csproj.CoreCompileInputs.cache
+D:\Projects\TatilBudurCom-Challange\obj\Debug\net6.0\TatilBudurCom-Challange.dll
+D:\Projects\TatilBudurCom-Challange\obj\Debug\net6.0\ref\TatilBudurCom-Challange.dll
+D:\Projects\TatilBudurCom-Challange\obj\Debug\net6.0\TatilBudurCom-Challange.pdb
+D:\Projects\TatilBudurCom-Challange\obj\Debug\net6.0\TatilBudurCom-Challange.genruntimeconfig.cache

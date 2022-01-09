@@ -24,10 +24,51 @@ namespace Challenge1
             Console.ReadKey();
         }
 
-        private const int SAMPLE_SIZE = 10000000;
+        private const int SAMPLE_SIZE = 10000000;       
         private static IEnumerable<SummarizedSalesData> Challenge1Solution(IEnumerable<SalesData> items)
         {
-            throw new NotImplementedException();
+            Dictionary<string, SummarizedSalesData> summaryHolder = new();
+
+            CultureInfo ci = new CultureInfo("en-UK");
+            Calendar calendar = ci.Calendar;
+            CalendarWeekRule calendarWeekRule = ci.DateTimeFormat.CalendarWeekRule;
+            DayOfWeek firstDayOfWeek = ci.DateTimeFormat.FirstDayOfWeek;
+
+            foreach (var salesData in items)
+            {
+                //Parse the SalesDate to requested format.
+                DateTime dt = DateTime.ParseExact(salesData.SalesDate, "yyyy-MM-dd", ci);
+                int weekNumber = dt.Year * 100;
+                weekNumber += calendar.GetWeekOfYear(dt, calendarWeekRule, firstDayOfWeek);
+
+                //Create the "theCode".
+                string theCode = string.Empty;
+                theCode += salesData.BrandId;
+                theCode += salesData.StoreId;
+                theCode += salesData.CompanyId.ToString();
+                theCode += salesData.ProductId.ToString();
+                theCode += weekNumber.ToString();
+
+                //Check if we have an entry for theCode, if not create.
+                if (!summaryHolder.ContainsKey(theCode))
+                {
+                    SummarizedSalesData ssd = new();
+                    ssd.ProductId = salesData.ProductId;
+                    ssd.CompanyId = salesData.CompanyId;
+                    ssd.BrandId = salesData.BrandId;
+                    ssd.StoreId = salesData.StoreId;
+                    ssd.WeekNumber = weekNumber;
+
+                    summaryHolder.Add(theCode, ssd);
+                }
+
+                //Now as we have the required record in the dictionary, we can update volumes and prices.
+                summaryHolder[theCode].TotalVolume += salesData.Volume;
+                summaryHolder[theCode].TotalPrice += salesData.Price;
+            }
+
+            //Our work is done. Now return the correct data.
+            return summaryHolder.Select(a => a.Value).ToList();
         }
 
         private static void SaveToDatabase(IEnumerable<SummarizedSalesData> items)
@@ -96,7 +137,7 @@ namespace Challenge1
             array = new string[itemCount];
             if (fillIdArray)
                 idArray = new string[itemCount];
-            for(int i=0; i < itemCount; i++)
+            for (int i = 0; i < itemCount; i++)
             {
                 array[i] = $"{prefix} - {i.ToString()}";
                 if (fillIdArray)
@@ -111,7 +152,7 @@ namespace Challenge1
                 }
             }
         }
-        
+
 
         private string[] _brands;
         private string[] _brandCodes;
