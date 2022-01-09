@@ -27,8 +27,13 @@ namespace Challenge1
         private const int SAMPLE_SIZE = 10000000;       
         private static IEnumerable<SummarizedSalesData> Challenge1Solution(IEnumerable<SalesData> items)
         {
+            //*****README*****
+            //Hi, there. 
+
+
             Dictionary<string, SummarizedSalesData> summaryHolder = new();
 
+            //To parse data's week data
             CultureInfo ci = new CultureInfo("en-UK");
             Calendar calendar = ci.Calendar;
             CalendarWeekRule calendarWeekRule = ci.DateTimeFormat.CalendarWeekRule;
@@ -38,12 +43,12 @@ namespace Challenge1
             {
                 //Parse the SalesDate to requested format.
                 DateTime dt = DateTime.ParseExact(salesData.SalesDate, "yyyy-MM-dd", ci);
-                int weekNumber = dt.Year * 100;
+                int weekNumber = dt.Year * 100; //Ex: 202100
                 weekNumber += calendar.GetWeekOfYear(dt, calendarWeekRule, firstDayOfWeek);
 
                 //Create the "theCode".
-                string theCode = string.Empty;
-                theCode += salesData.BrandId;
+                string theCode = String.Empty;
+                theCode = salesData.BrandId;
                 theCode += salesData.StoreId;
                 theCode += salesData.CompanyId.ToString();
                 theCode += salesData.ProductId.ToString();
@@ -53,11 +58,13 @@ namespace Challenge1
                 if (!summaryHolder.ContainsKey(theCode))
                 {
                     SummarizedSalesData ssd = new();
+
+                    //As we lack a ctor, let's do it in the old way.
                     ssd.ProductId = salesData.ProductId;
                     ssd.CompanyId = salesData.CompanyId;
                     ssd.BrandId = salesData.BrandId;
                     ssd.StoreId = salesData.StoreId;
-                    ssd.WeekNumber = weekNumber;
+                    ssd.WeekNumber = weekNumber;                    
 
                     summaryHolder.Add(theCode, ssd);
                 }
