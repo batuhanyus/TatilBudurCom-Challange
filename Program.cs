@@ -42,7 +42,6 @@ namespace Challenge1
             //*****README*****
 
             Dictionary<int, SummarizedSalesData> summaryHolder = new();
-            List<SummarizedSalesData> ssds = new();
 
             List<string> brandCodes = new List<string>();
             List<string> storeCodes = new List<string>();
@@ -53,9 +52,9 @@ namespace Challenge1
             CalendarWeekRule calendarWeekRule = ci.DateTimeFormat.CalendarWeekRule;
             DayOfWeek firstDayOfWeek = ci.DateTimeFormat.FirstDayOfWeek;
 
-            //double[,,,,,] volumesHolder = new double[2, 54, 10, 5, 100, 50];
-            //decimal[,,,,,] pricesHolder = new decimal[2, 54, 10, 5, 100, 50];
-            SummarizedSalesData[,,,,,] ssdHolder = new SummarizedSalesData[2, 54, 10, 5, 100, 50];
+            DateTime backThen = DateTime.Now.AddMonths(-2);
+            long zeroPtr = (backThen.Year - 2020) * 100000000 + (calendar.GetWeekOfYear(backThen, calendarWeekRule, firstDayOfWeek) * 1000000);
+            List<int*> theCodePtrs = new();
 
             foreach (var salesData in items)
             {
@@ -70,36 +69,16 @@ namespace Challenge1
                 if (!storeCodes.Contains(salesData.StoreId))
                     storeCodes.Add(salesData.StoreId);
 
-                ////Create the "theCode".
-                //int theCode = 0;
-                //theCode += (dt.Year - 2020) * 100000000;
-                //theCode += calendar.GetWeekOfYear(dt, calendarWeekRule, firstDayOfWeek) * 1000000;
-                //theCode += brandCodes.IndexOf(salesData.BrandId) * 100000;
-                //theCode += salesData.CompanyId * 10000;
-                //theCode += storeCodes.IndexOf(salesData.StoreId) * 100;
-                //theCode += salesData.ProductId;
+                //Create the "theCode".
+                int theCode = 0;
+                theCode += (dt.Year - 2020) * 100000000;
+                theCode += calendar.GetWeekOfYear(dt, calendarWeekRule, firstDayOfWeek) * 1000000;
+                theCode += brandCodes.IndexOf(salesData.BrandId) * 100000;
+                theCode += salesData.CompanyId * 10000;
+                theCode += storeCodes.IndexOf(salesData.StoreId) * 100;
+                theCode += salesData.ProductId;
 
-                int[] tc = new int[6];
-                tc[0] = dt.Year - 2020 - 1;
-                tc[1] = calendar.GetWeekOfYear(dt, calendarWeekRule, firstDayOfWeek);
-                tc[2] = brandCodes.IndexOf(salesData.BrandId);
-                tc[3] = salesData.CompanyId;
-                tc[4] = storeCodes.IndexOf(salesData.StoreId);
-                tc[5] = salesData.ProductId;
 
-                //volumesHolder[tc[0], tc[1], tc[2], tc[3], tc[4], tc[5]] += salesData.Volume;
-                //pricesHolder[tc[0], tc[1], tc[2], tc[3], tc[4], tc[5]] += salesData.Price;
-
-                SummarizedSalesData ssd = new();
-
-                //As we lack a ctor, let's do it in the old way.
-                ssd.ProductId = salesData.ProductId;
-                ssd.CompanyId = salesData.CompanyId;
-                ssd.BrandId = salesData.BrandId;
-                ssd.StoreId = salesData.StoreId;
-                ssd.WeekNumber = weekNumber;
-
-                ssdHolder[tc[0], tc[1], tc[2], tc[3], tc[4], tc[5]] = ssd;
 
                 ////Check if we have an entry for theCode, if not create.
                 //if (!summaryHolder.ContainsKey(theCode))
